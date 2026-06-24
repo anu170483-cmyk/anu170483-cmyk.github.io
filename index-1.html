@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Annapoorna R — Software Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --ink:     #0f0f10;
+    --paper:   #f8f6f1;
+    --accent:  #2e5bff;
+    --muted:   #6b6b72;
+    --border:  #e2e0da;
+    --card:    #ffffff;
+    --tag-bg:  #eef1ff;
+    --tag-fg:  #2e5bff;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 clamp(1.5rem, 5vw, 4rem);
+    height: 56px;
+    background: rgba(248,246,241,.88);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.15rem;
+    letter-spacing: -.01em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 1.8rem; list-style: none; }
+  .nav-links a {
+    font-size: .8rem; font-weight: 500; letter-spacing: .06em;
+    text-transform: uppercase; color: var(--muted); text-decoration: none;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 7rem clamp(1.5rem, 6vw, 6rem) 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 70% 40%, rgba(46,91,255,.07) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 20% 80%, rgba(46,91,255,.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-inner { max-width: 800px; position: relative; }
+  .hero-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .75rem; letter-spacing: .12em;
+    color: var(--accent); text-transform: uppercase;
+    margin-bottom: 1.2rem;
+    opacity: 0; animation: fadeUp .6s .1s forwards;
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(3rem, 8vw, 6rem);
+    line-height: 1.03;
+    letter-spacing: -.02em;
+    color: var(--ink);
+    margin-bottom: 1.4rem;
+    opacity: 0; animation: fadeUp .7s .2s forwards;
+  }
+  .hero h1 em { font-style: italic; color: var(--accent); }
+  .hero-sub {
+    font-size: 1.05rem; color: var(--muted); max-width: 520px;
+    line-height: 1.75; margin-bottom: 2.5rem;
+    opacity: 0; animation: fadeUp .7s .35s forwards;
+  }
+  .hero-cta {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    opacity: 0; animation: fadeUp .7s .5s forwards;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: .45rem;
+    padding: .7rem 1.5rem; border-radius: 4px;
+    font-size: .85rem; font-weight: 600; text-decoration: none;
+    transition: transform .15s, box-shadow .15s;
+  }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,.1); }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-outline {
+    background: transparent; color: var(--ink);
+    border: 1.5px solid var(--border);
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── SECTION SHELL ── */
+  section { padding: 5rem clamp(1.5rem, 6vw, 6rem); }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .7rem; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: .6rem;
+  }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    line-height: 1.15; letter-spacing: -.015em;
+    margin-bottom: 2.5rem;
+  }
+  .max-w { max-width: 1100px; margin: 0 auto; }
+
+  /* ── SKILLS ── */
+  #skills { background: var(--ink); color: var(--paper); }
+  #skills .section-label { color: #7b9bff; }
+  #skills .section-title { color: var(--paper); }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5px;
+    background: rgba(255,255,255,.08);
+    border: 1.5px solid rgba(255,255,255,.08);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .skill-cell {
+    background: var(--ink);
+    padding: 1.6rem 1.8rem;
+    transition: background .2s;
+  }
+  .skill-cell:hover { background: rgba(46,91,255,.15); }
+  .skill-cell h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .7rem; letter-spacing: .1em; text-transform: uppercase;
+    color: #7b9bff; margin-bottom: .6rem;
+  }
+  .skill-cell p { font-size: .9rem; color: rgba(248,246,241,.75); line-height: 1.6; }
+
+  /* ── EXPERIENCE ── */
+  #experience { background: var(--paper); }
+  .exp-list { display: flex; flex-direction: column; gap: 1.5rem; }
+  .exp-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.8rem 2rem;
+    position: relative;
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .exp-card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 4px 24px rgba(46,91,255,.08);
+  }
+  .exp-card::before {
+    content: '';
+    position: absolute; left: 0; top: 1.8rem; bottom: 1.8rem;
+    width: 3px; background: var(--accent);
+    border-radius: 0 2px 2px 0;
+    opacity: 0; transition: opacity .2s;
+  }
+  .exp-card:hover::before { opacity: 1; }
+  .exp-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap; margin-bottom: .7rem; }
+  .exp-title { font-weight: 600; font-size: 1rem; }
+  .exp-company { font-size: .85rem; color: var(--accent); font-weight: 500; }
+  .exp-date { font-family: 'JetBrains Mono', monospace; font-size: .75rem; color: var(--muted); white-space: nowrap; }
+  .exp-stack { font-size: .78rem; color: var(--muted); font-style: italic; margin-bottom: .8rem; }
+  .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: .4rem; }
+  .exp-bullets li { font-size: .9rem; color: #3a3a42; padding-left: 1.1rem; position: relative; }
+  .exp-bullets li::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-size: .8rem; }
+
+  /* ── PROJECTS ── */
+  #projects { background: #f2f0eb; }
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.4rem;
+  }
+  .project-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.8rem;
+    display: flex; flex-direction: column; gap: .8rem;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .project-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,.09); }
+  .project-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .7rem; color: var(--accent); letter-spacing: .1em;
+  }
+  .project-card h3 { font-family: 'DM Serif Display', serif; font-size: 1.25rem; line-height: 1.2; }
+  .project-card p { font-size: .88rem; color: var(--muted); flex: 1; }
+  .project-tags { display: flex; flex-wrap: wrap; gap: .4rem; }
+  .tag {
+    font-size: .72rem; font-weight: 500;
+    background: var(--tag-bg); color: var(--tag-fg);
+    padding: .2rem .55rem; border-radius: 3px; letter-spacing: .02em;
+  }
+  .project-link {
+    font-size: .8rem; font-weight: 600; color: var(--accent);
+    text-decoration: none; letter-spacing: .03em;
+    display: inline-flex; align-items: center; gap: .3rem;
+    margin-top: .3rem;
+    transition: gap .15s;
+  }
+  .project-link:hover { gap: .6rem; }
+
+  /* ── EDUCATION ── */
+  #education { background: var(--paper); }
+  .edu-list { display: flex; flex-direction: column; gap: 1rem; }
+  .edu-item {
+    display: grid; grid-template-columns: 1fr auto;
+    gap: .4rem 2rem; align-items: start;
+    padding: 1.4rem 1.8rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  .edu-item h3 { font-weight: 600; font-size: .95rem; }
+  .edu-item .edu-school { font-size: .85rem; color: var(--muted); }
+  .edu-score {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .85rem; color: var(--accent); font-weight: 500;
+    white-space: nowrap; text-align: right;
+  }
+  .edu-year { font-size: .78rem; color: var(--muted); text-align: right; }
+
+  /* ── CONTACT ── */
+  #contact {
+    background: var(--ink); color: var(--paper);
+    text-align: center;
+  }
+  #contact .section-label { color: #7b9bff; }
+  #contact .section-title { color: var(--paper); max-width: 600px; margin: 0 auto 2rem; }
+  .contact-links {
+    display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;
+  }
+  .contact-link {
+    display: inline-flex; align-items: center; gap: .5rem;
+    padding: .65rem 1.3rem; border-radius: 4px;
+    font-size: .85rem; font-weight: 500; text-decoration: none;
+    border: 1.5px solid rgba(255,255,255,.15);
+    color: rgba(248,246,241,.8);
+    transition: border-color .2s, color .2s;
+  }
+  .contact-link:hover { border-color: #7b9bff; color: #fff; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--ink); color: rgba(248,246,241,.35);
+    text-align: center; padding: 1.5rem;
+    font-size: .78rem; border-top: 1px solid rgba(255,255,255,.06);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+    .hero h1 { font-size: 2.6rem; }
+    .exp-header { flex-direction: column; }
+    .edu-item { grid-template-columns: 1fr; }
+    .edu-score, .edu-year { text-align: left; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">Annapoorna R</a>
+  <ul class="nav-links">
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <p class="hero-eyebrow">// Software Engineer · Bengaluru, India</p>
+    <h1>Building software<br>that <em>actually works</em>.</h1>
+    <p class="hero-sub">
+      ECE graduate with hands-on experience across Android, Full-Stack Java, and ML systems.
+      I enjoy turning real-world problems into reliable, scalable software.
+    </p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#projects">See my projects</a>
+      <a class="btn btn-outline" href="https://github.com/anu170483-cmyk" target="_blank">GitHub ↗</a>
+      <a class="btn btn-outline" href="#contact">Get in touch</a>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="max-w">
+    <p class="section-label">// 01 — Technical Skills</p>
+    <h2 class="section-title">What I work with</h2>
+    <div class="skills-grid">
+      <div class="skill-cell">
+        <h3>Languages</h3>
+        <p>Python · Java · SQL · Kotlin</p>
+      </div>
+      <div class="skill-cell">
+        <h3>Backend</h3>
+        <p>Spring Boot · Spring Security · Hibernate · JPA · REST API Design</p>
+      </div>
+      <div class="skill-cell">
+        <h3>Frontend</h3>
+        <p>HTML5 · CSS3 · JavaScript · Responsive Design</p>
+      </div>
+      <div class="skill-cell">
+        <h3>Mobile</h3>
+        <p>Android Studio · Java · Kotlin · XML · Android SDK · Firebase</p>
+      </div>
+      <div class="skill-cell">
+        <h3>Databases</h3>
+        <p>MySQL · Firebase Realtime DB</p>
+      </div>
+      <div class="skill-cell">
+        <h3>Tools</h3>
+        <p>Git · GitHub · Postman · XGBoost · Scikit-learn · VGG16</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="max-w">
+    <p class="section-label">// 02 — Experience</p>
+    <h2 class="section-title">Where I've worked</h2>
+    <div class="exp-list">
+
+      <div class="exp-card">
+        <div class="exp-header">
+          <div>
+            <div class="exp-title">Application Engineer Intern</div>
+            <div class="exp-company">Tantragyaan Solutions</div>
+          </div>
+          <div class="exp-date">Mar 2026 – May 2026</div>
+        </div>
+        <div class="exp-stack">Android Studio · Java · XML · Android SDK · Firebase · Git</div>
+        <ul class="exp-bullets">
+          <li>Developed and maintained Android applications using Java, implementing user-friendly interfaces and core features.</li>
+          <li>Integrated REST APIs and managed local data via Firebase for real-time synchronisation.</li>
+          <li>Collaborated on design, testing, debugging, and optimisation of mobile apps across Android devices.</li>
+        </ul>
+      </div>
+
+      <div class="exp-card">
+        <div class="exp-header">
+          <div>
+            <div class="exp-title">Java Full Stack Developer Trainee</div>
+            <div class="exp-company">QSpiders</div>
+          </div>
+          <div class="exp-date">Jan 2026 – Jun 2026</div>
+        </div>
+        <div class="exp-stack">Java · Spring Boot · HTML · CSS · JavaScript · MySQL</div>
+        <ul class="exp-bullets">
+          <li>Built end-to-end web applications implementing CRUD operations, form validation, and authentication modules.</li>
+          <li>Designed RESTful APIs and integrated MySQL databases for scalable application development.</li>
+          <li>Gained deep hands-on exposure to backend development, API design, and software engineering best practices.</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="max-w">
+    <p class="section-label">// 03 — Projects</p>
+    <h2 class="section-title">Things I've built</h2>
+    <div class="projects-grid">
+
+      <div class="project-card">
+        <div class="project-num">Project 01</div>
+        <h3>Lung Cancer Recurrence Prediction</h3>
+        <p>Multimodal ML system combining clinical data and CT scan images to predict lung cancer recurrence, reducing false negatives with a hybrid XGBoost + VGG16 architecture.</p>
+        <div class="project-tags">
+          <span class="tag">Python</span>
+          <span class="tag">XGBoost</span>
+          <span class="tag">Scikit-learn</span>
+          <span class="tag">VGG16</span>
+        </div>
+        <a class="project-link" href="https://github.com/anu170483-cmyk/Intelligent-optimized-Multimodal-Learning-framework-for-early-Prediction-of-Lung-Cancer-recurrence" target="_blank">View on GitHub →</a>
+      </div>
+
+      <div class="project-card">
+        <div class="project-num">Project 02</div>
+        <h3>Expense Tracker App</h3>
+        <p>Secure Android app for tracking and categorising expenses with Firebase authentication, real-time data management, and a clean Material Design interface.</p>
+        <div class="project-tags">
+          <span class="tag">Kotlin</span>
+          <span class="tag">Android XML</span>
+          <span class="tag">Firebase</span>
+        </div>
+        <a class="project-link" href="https://github.com/anu170483-cmyk/Expense_tracker_2" target="_blank">View on GitHub →</a>
+      </div>
+
+      <div class="project-card">
+        <div class="project-num">Project 03</div>
+        <h3>Decathlon Website Clone</h3>
+        <p>Responsive e-commerce web app with product listings, category navigation, search, filtering, and shopping cart functionality — built without any framework.</p>
+        <div class="project-tags">
+          <span class="tag">HTML</span>
+          <span class="tag">CSS</span>
+          <span class="tag">JavaScript</span>
+        </div>
+        <a class="project-link" href="https://github.com/anu170483-cmyk/decathlon" target="_blank">View on GitHub →</a>
+      </div>
+
+      <div class="project-card">
+        <div class="project-num">Project 07</div>
+        <h3>Library Management System</h3>
+        <p>Web-based library management app to manage books, members, and transactions. Features include add/edit/delete books & users, issue/return tracking, a live dashboard with stats, and search functionality.</p>
+        <div class="project-tags">
+          <span class="tag">HTML</span>
+          <span class="tag">CSS</span>
+          <span class="tag">JavaScript</span>
+        </div>
+        <a class="project-link" href="https://github.com/anu170483-cmyk/lib_management" target="_blank">View on GitHub →</a>
+      </div>
+
+      <div class="project-card">
+        <div class="project-num">Project 04</div>
+        <h3>Hotel Food Menu App</h3>
+        <p>Android app with Firebase authentication, RecyclerView-based food menu UI, and tab navigation for an intuitive ordering experience.</p>
+        <div class="project-tags">
+          <span class="tag">Java</span>
+          <span class="tag">Firebase</span>
+          <span class="tag">RecyclerView</span>
+        </div>
+        <a class="project-link" href="https://github.com/anu170483-cmyk/Hotel-App" target="_blank">View on GitHub →</a>
+      </div>
+
+      <div class="project-card">
+        <div class="project-num">Project 05</div>
+        <h3>House Price Prediction</h3>
+        <p>XGBoost regression model on Kaggle dataset with full pipeline: data preprocessing, feature engineering, training, and evaluation notebooks.</p>
+        <div class="project-tags">
+          <span class="tag">Python</span>
+          <span class="tag">XGBoost</span>
+          <span class="tag">Jupyter</span>
+        </div>
+        <a class="project-link" href="https://github.com/anu170483-cmyk/house-price-prediction-xgboost" target="_blank">View on GitHub →</a>
+      </div>
+
+      <div class="project-card">
+        <div class="project-num">Project 06</div>
+        <h3>Android Multi-Feature App</h3>
+        <p>Multi-feature Android application integrating user input handling, data processing, and various UI components using Java.</p>
+        <div class="project-tags">
+          <span class="tag">Java</span>
+          <span class="tag">Android SDK</span>
+        </div>
+        <a class="project-link" href="https://github.com/anu170483-cmyk/Android-MultiFeature-App" target="_blank">View on GitHub →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="max-w">
+    <p class="section-label">// 04 — Education</p>
+    <h2 class="section-title">Academic background</h2>
+    <div class="edu-list">
+
+      <div class="edu-item">
+        <div>
+          <div class="edu-school">Bangalore Institute of Technology, Bengaluru</div>
+          <h3>B.E. in Electronics &amp; Communication Engineering</h3>
+        </div>
+        <div>
+          <div class="edu-score">8.9 / 10 CGPA</div>
+          <div class="edu-year">2022 – 2026</div>
+        </div>
+      </div>
+
+      <div class="edu-item">
+        <div>
+          <div class="edu-school">RNS PU College</div>
+          <h3>Class XII — Science (PCMB)</h3>
+        </div>
+        <div>
+          <div class="edu-score">93%</div>
+          <div class="edu-year">2020 – 2022</div>
+        </div>
+      </div>
+
+      <div class="edu-item">
+        <div>
+          <div class="edu-school">Vishwa Bharathi Public School</div>
+          <h3>Class X — State Board</h3>
+        </div>
+        <div>
+          <div class="edu-score">94%</div>
+          <div class="edu-year">2011 – 2020</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="max-w">
+    <p class="section-label">// 05 — Contact</p>
+    <h2 class="section-title">Let's work together</h2>
+    <div class="contact-links">
+      <a class="contact-link" href="mailto:anu170483@gmail.com">✉ anu170483@gmail.com</a>
+      <a class="contact-link" href="https://linkedin.com/in/annapoorna-r" target="_blank">in LinkedIn</a>
+      <a class="contact-link" href="https://github.com/anu170483-cmyk" target="_blank">⌥ GitHub</a>
+      <a class="contact-link" href="tel:+919019714476">📞 +91 90197 14476</a>
+    </div>
+  </div>
+</section>
+
+<footer>© 2026 Annapoorna R · Bengaluru, India</footer>
+
+</body>
+</html>
